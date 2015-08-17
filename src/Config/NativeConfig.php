@@ -37,7 +37,12 @@ class NativeConfig implements ConfigurableInterface
                 'ACL' => 'public-read',
             ],
             'path' => ':attachment/:id/:style/:filename'
-        ]
+        ],
+        'github' => [
+            'domain' => ':domain',
+            'url' => '/system/:class/:attachment/:id_partition/:style/:filename',
+            'path' => 'public:url',
+        ],
     ];
 
     /**

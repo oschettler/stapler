@@ -41,6 +41,7 @@ class Interpolator
     protected function interpolations()
     {
         return [
+            ':domain' => 'domain',
             ':filename' => 'filename',
             ':url' => 'url',
             ':app_root' => 'appRoot',
@@ -56,6 +57,24 @@ class Interpolator
             ':attachment' => 'attachment',
             ':style' => 'style'
         ];
+    }
+
+    /**
+     * Returns the domain.
+     *
+     * @param Attachment $attachment
+     * @param string $styleName
+     * @return string
+     */
+    protected function domain(Attachment $attachment, $styleName = '')
+    {
+        list ($domain, $style) = $styleName;
+        if ($style) {
+            return $domain;
+        }
+        else {
+            return $_SERVER['HTTP_HOST'];
+        }
     }
 
     /**

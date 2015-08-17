@@ -10,7 +10,16 @@ class Validator
      */
     public function validateOptions(array $options)
     {
-        $options['storage'] == 'filesystem' ? $this->validateFilesystemOptions($options) : $this->validateS3Options($options);
+        switch ($options['storage']) {
+            case 's3':
+                $this->validateS3Options($options);
+                break;
+            case 'github':
+                $this->validateGithubOptions($options);
+                break;
+            default:
+                $this->validateFilesystemOptions($options);
+        }
     }
 
     /**
@@ -47,5 +56,10 @@ class Validator
         if (!$options['s3_client_config']['key']) {
             throw new Exceptions\InvalidUrlOptionException('Invalid Path: a key is required for s3 storage.', 1);
         }
+    }
+
+    protected function validateGithubOptions(array $options)
+    {
+        // N.Y.I.
     }
 }

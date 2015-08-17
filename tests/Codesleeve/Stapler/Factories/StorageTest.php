@@ -58,6 +58,22 @@ class StorageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that the Storage factory can create an instance of the s3
+     * storage driver.
+     *
+     * @test
+     * @return void
+     */
+    public function it_should_be_able_to_create_a_github_storeage_instance()
+    {
+        $attachment = $this->buildMockAttachment('github');
+
+        $storage = Storage::create($attachment);
+
+        $this->assertInstanceOf('Codesleeve\Stapler\Storage\Github', $storage);
+    }
+
+    /**
      * Test that the Storage factory should create an instance of the filesystem
      * storage driver by default.
      *
