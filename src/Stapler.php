@@ -4,6 +4,10 @@ use Codesleeve\Stapler\Config\ConfigurableInterface;
 use Codesleeve\Stapler\File\Image\Resizer;
 use Aws\S3\S3Client;
 
+use Img\Publishers\GithubApi;
+use Img\User;
+use Illuminate\Support\Facades\Auth;
+
 /**
  * Easy file attachment management for Eloquent (Laravel 4).
  *

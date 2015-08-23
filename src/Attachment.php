@@ -5,7 +5,9 @@ use Codesleeve\Stapler\Storage\StorageableInterface;
 use Codesleeve\Stapler\File\Image\Resizer;
 use Codesleeve\Stapler\Factories\File as FileFactory;
 
-class Attachment
+use Codesleeve\Stapler\StorableInterface;
+
+class Attachment extends StorableInterface
 {
     /**
      * The model instance that the attachment belongs to.
@@ -391,6 +393,8 @@ class Attachment
 
         foreach ($this->styles as $style)
         {
+            $this->setStorageDriver(StorageFactory::create($style));
+
             $fileLocation = $this->storage == 'filesystem' ? $this->path('original') : $this->url('original');
             $file = FileFactory::create($fileLocation);
 
@@ -402,7 +406,7 @@ class Attachment
             }
 
             $filePath = $this->path($style->name);
-            $this->move($file, $filePath);
+            $this->move($file, $filePath, $style);
         }
     }
 

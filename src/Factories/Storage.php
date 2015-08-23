@@ -1,6 +1,6 @@
 <?php namespace Codesleeve\Stapler\Factories;
 
-use Codesleeve\Stapler\Attachment as AttachedFile;
+use Codesleeve\Stapler\StorableInterface as Storable;
 use Codesleeve\Stapler\Storage\Filesystem;
 use Codesleeve\Stapler\Storage\S3;
 use Codesleeve\Stapler\Storage\Github;
@@ -11,28 +11,27 @@ class Storage
     /**
      * Build a storage instance.
      *
-     * @param  AttachedFile $attachment
+     * @param  Storable $storable
      * @return \Codesleeve\Stapler\Storage\StorageableInterface
      */
-    public static function create(AttachedFile $attachment)
+    public static function create(Storable $storable)
     {
-        switch ($attachment->storage) {
+        switch ($storable->storage) {
             case 'filesystem':
-                return new Filesystem($attachment);
+                return new Filesystem($storable);
                 break;
 
             case 's3':
-                $s3Client = Stapler::getS3ClientInstance($attachment);
-                return new S3($attachment, $s3Client);
+                $s3Client = Stapler::getS3ClientInstance($storable);
+                return new S3($storable, $s3Client);
                 break;
 
             case 'github':
-                $githubClient = Stapler::getGithubClientInstance($attachment);
-                return new Github($attachment, $githubClient);
+                return new Github($storable);
                 break;
 
             default:
-                return new Filesystem($attachment);
+                return new Filesystem($storable);
                 break;
         }
     }

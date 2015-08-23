@@ -40,7 +40,7 @@ class NativeConfig implements ConfigurableInterface
         ],
         'github' => [
             'domain' => ':domain',
-            'url' => '/system/:class/:attachment/:id_partition/:style/:filename',
+            'url' => '/system/:class/:attachment/:id_partition/:raw_style/:filename',
             'path' => 'public:url',
         ],
     ];

@@ -55,7 +55,8 @@ class Interpolator
             ':secure_hash' => 'secureHash',
             ':id_partition' => 'idPartition',
             ':attachment' => 'attachment',
-            ':style' => 'style'
+            ':style' => 'style',
+            ':raw_style' => 'rawStyle',
         ];
     }
 
@@ -68,12 +69,12 @@ class Interpolator
      */
     protected function domain(Attachment $attachment, $styleName = '')
     {
-        list ($domain, $style) = $styleName;
-        if ($style) {
-            return $domain;
+        $parts = explode(':', $styleName);
+        if (count($parts) == 1) {
+            return $_SERVER['HTTP_HOST'];
         }
         else {
-            return $_SERVER['HTTP_HOST'];
+            return $parts[0];
         }
     }
 
@@ -265,6 +266,19 @@ class Interpolator
     protected function style(Attachment $attachment, $styleName = '')
     {
         return $styleName ?: $attachment->default_style;
+    }
+
+    protected function rawStyle(Attachment $attachment, $styleName = '')
+    {
+        $styleName = $styleName ?: $attachment->default_style;
+
+        $parts = explode(':', $styleName);
+        if (count($parts) > 1) {
+            return $parts[1];
+        }
+        else {
+            return $styleName;
+        }
     }
 
     /**

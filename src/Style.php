@@ -1,6 +1,8 @@
 <?php namespace Codesleeve\Stapler;
 
-class Style
+use Codesleeve\Stapler\StorableInterface;
+
+class Style implements StorableInterface
 {
     /**
      * The name of the style.
@@ -33,6 +35,9 @@ class Style
      */
     public $convertOptions = [];
 
+    public $storage = 'filesystem';
+    public $storageOptions = null;
+
     /**
      * Constructor method.
      *
@@ -58,6 +63,11 @@ class Style
 
             if (array_key_exists('convert_options', $value)) {
                 $this->convertOptions = $value['convert_options'];
+            }
+
+            if (array_key_exists('storage', $value)) {
+                $this->storage = $value['storage'];
+                $this->storageOptions = $value[$value['storage']];
             }
 
             return;

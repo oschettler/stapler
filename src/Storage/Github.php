@@ -13,22 +13,14 @@ class Github implements StorageableInterface
     public $attachedFile;
 
     /**
-     * The Github API client.
-     *
-     * @var GithubApi
-     */
-    protected $githubApi;
-
-    /**
      * Constructor method
      *
      * @param Attachment $attachedFile
      * @param GithubApi $githubApi
      */
-    function __construct(Attachment $attachedFile, GithubApi $githubApi)
+    function __construct(Attachment $attachedFile)
     {
         $this->attachedFile = $attachedFile;
-        $this->githubApi = $githubApi;
     }
 
     /**
@@ -39,7 +31,14 @@ class Github implements StorageableInterface
      */
     public function url($styleName)
     {
-        return 'http://DOMAIN' . $this->path($styleName);
+        $paths = explode(':', $styleName);
+        if (count($paths) == 1) {
+            $domain = $_SERVER['HTTP_HOST'];
+        }
+        else {
+            $domain = $paths[0];
+        }
+        return 'http://' . $domain . $this->path($styleName);
     }
 
     /**
@@ -71,8 +70,15 @@ class Github implements StorageableInterface
      * @param  string $file
      * @param  string $filePath
      */
-    public function move($file, $filePath)
+    public function move($file, $filePath, $style)
     {
-        $this->githubApi->save($filePath, file_get_contents($file));
+
+
+        if ($this->githubApi) {
+            $this->githubApi->save($filePath, file_get_contents($file));
+        }
+        else {
+            throw \Exception("Not logged into Github");
+        }
     }
 }
